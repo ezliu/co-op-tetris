@@ -194,15 +194,6 @@ TetrisGame.Tetromino = function Tetromino(row, col, data) {
 
 TetrisGame.Tetromino.templates = [
 	[
-		[1]
-	], [
-		[1, 1]
-	], [
-		[1, 1, 1]
-	], [
-		[1, 1],
-		[1, 0]
-	], [
 		[1, 1, 1, 1]
 	], [
 		[1, 0, 0],

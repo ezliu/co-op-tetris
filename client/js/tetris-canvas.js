@@ -14,7 +14,8 @@ TetrisCanvas.keyEventMap = {
 	37: "moveTetrominoLeft",        // Left
 	38: "rotateTetrominoClockwise", // Up
 	39: "moveTetrominoRight",       // Right
-	40: "moveTetrominoDown"         // Down
+	40: "moveTetrominoDown",        // Down
+	32: "cheat"                     // Remove a line
 };
 
 TetrisCanvas.prototype = {

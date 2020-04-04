@@ -150,14 +150,23 @@ TetrisGame.prototype = {
 		var row = this._data.length;
 		while (--row >= 0) {
 			if (this._isCompleteLine(row)) {
-				this._data.splice(row, 1);
-				this._data.unshift(this._getEmptyLine(this._data[0].length));
-				this._incrementLinesCount();
+				this._removeLine();
 				row++;
 			}
 		}
 	},
 	
+	cheat: function () {
+		this._removeLine(this._data.length - 1);
+		this.trigger("change:data");
+	},
+
+	_removeLine: function (row) {
+		this._data.splice(row, 1);
+		this._data.unshift(this._getEmptyLine(this._data[0].length));
+		this._incrementLinesCount();
+	},
+
 	_isCompleteLine: function (row) {
 		for (var col = 0; col < this._data[row].length; col++) {
 			if (!this._isCellOccupied(row, col)) return false;

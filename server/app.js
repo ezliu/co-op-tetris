@@ -9,7 +9,7 @@ var tetrisGame = null;
 function newGame() {
 	console.log("New Game");
 	
-	tetrisGame = new TetrisGame(20, 10, {
+	tetrisGame = new TetrisGame(20, 20, {
 		levelFallIntervalMultiplier: 0.75,
 		levelLinesCount: 10
 	});

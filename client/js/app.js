@@ -6,9 +6,9 @@
 		$playersCount = $("#players-count");
 		
 	$canvas
-		.attr("width", height / 2)
+		.attr("width", height)
 		.attr("height", height)
-		.css("width", (height / 2) + "px");
+		.css("width", (height) + "px");
 		
 	var socket = io.connect("http://192.168.86.107:1111"),
 		tetrisCanvas = null,

@@ -10,12 +10,13 @@ function TetrisCanvas(canvas, tetrisGame, tetrominoId, options) {
 }
 
 TetrisCanvas.keyEventMap = {
-	13: "dropTetromino",            // Enter
-	37: "moveTetrominoLeft",        // Left
+	13: "dropTetromino",						// Enter
+	37: "moveTetrominoLeft",				// Left
 	38: "rotateTetrominoClockwise", // Up
-	39: "moveTetrominoRight",       // Right
-	40: "moveTetrominoDown",        // Down
-	32: "cheat"                     // Remove a line
+	39: "moveTetrominoRight",				// Right
+	40: "moveTetrominoDown",				// Down
+	32: "cheat",										// Remove a line
+	16: "toggleTetrominoType",			// Make it normal
 };
 
 TetrisCanvas.prototype = {
@@ -38,14 +39,17 @@ TetrisCanvas.prototype = {
 		for (var row = 0; row < this.tetrisGame.data.length; row++) {
 			for (var col = 0; col < this.tetrisGame.data[row].length; col++) {
 				if (this.tetrisGame.data[row][col]) {
-					this._drawCell(row, col, this.tetrisGame.data[row][col]);
+					this._drawCell(row, col, this.tetrisGame.data[row][col], "normal");
 				}
 			}
 		}
 	},
 	
-	_drawCell: function (row, col, tetrominoId) {
+	_drawCell: function (row, col, tetrominoId, tetrominoType) {
 		var color = this.colors[tetrominoId] || (this.colors[tetrominoId] = this.options.colorGeneratorFunction(tetrominoId));
+		if (tetrominoType !== "normal") {
+			color = "rgb(255, 0, 0, 0.5)";
+		}
 		this.context.fillStyle = color;
 		this.context.fillRect(
 			col * this.options.cellSize,
@@ -68,7 +72,7 @@ TetrisCanvas.prototype = {
 		for (var row = 0; row < tetromino.data.length; row++) {
 			for (var col = 0; col < tetromino.data[row].length; col++) {
 				if (tetromino.data[row][col]) {
-					this._drawCell(tetromino.row + row, tetromino.col + col, id);
+					this._drawCell(tetromino.row + row, tetromino.col + col, id, tetromino.type);
 				}
 			}
 		}

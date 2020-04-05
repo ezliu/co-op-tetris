@@ -51,7 +51,8 @@ TetrisGame.prototype = {
 	},
 
 	moveTetrominoDown: function (id) {
-		this._modifyTetromino(id, this._tetrominoes[id].moveDown, this._placeTetromino);
+		this._modifyTetromino(
+			id, this._tetrominoes[id].moveDown, this._placeTetromino);
 	},
 
 	rotateTetrominoClockwise: function (id) {
@@ -190,7 +191,7 @@ TetrisGame.prototype = {
 		var row = this._data.length;
 		while (--row >= 0) {
 			if (this._isCompleteLine(row)) {
-				this._removeLine();
+				this._removeLine(row);
 				row++;
 			}
 		}

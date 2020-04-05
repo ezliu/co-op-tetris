@@ -72,6 +72,7 @@ TetrisGame.prototype = {
 	},
 
 	toggleTetrominoType: function (id) {
+		// TODO: Should make subclasses of Tetromino to implement these.
 		if (this._tetrominoes[id].type === "bulldoze") {
 			this._tetrominoes[id].type = "normal";
 			this.trigger("change:tetromino", id);
@@ -81,6 +82,9 @@ TetrisGame.prototype = {
 			if (this._tetrominoes[id].jumpsLeft === 0) {
 				this._tetrominoes[id].type = "normal";
 			}
+			this.trigger("change:tetromino", id);
+		} else if (this._tetrominoes[id].type === "chameleon") {
+			this._tetrominoes[id].changeTemplate();
 			this.trigger("change:tetromino", id);
 		}
 	},
@@ -245,10 +249,11 @@ TetrisGame.prototype = {
 
 _.extend(TetrisGame.prototype, Events);
 
-TetrisGame.Tetromino = function Tetromino(row, col, data, type) {
+TetrisGame.Tetromino = function Tetromino(row, col, templateIndex, type) {
 	this.row = row;
 	this.col = col;
-	this.data = data;
+	this.data = TetrisGame.Tetromino.templates[templateIndex];
+	this.templateIndex = templateIndex;
 	this.type = type;
 	this.jumpsLeft = 10;
 }
@@ -289,12 +294,12 @@ function randomSample(items) {
 }
 
 TetrisGame.Tetromino.random = function (row, col) {
-	var typeProbabilities = {"normal": 0.9, "bulldoze": 0.05, "float": 0.05};
+	var typeProbabilities = {
+		"normal": 0.05, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.85};
 	var type = randomSample(typeProbabilities);
-	var template = TetrisGame.Tetromino.templates[
-		Math.floor(Math.random() * TetrisGame.Tetromino.templates.length)
-	];
-	return new TetrisGame.Tetromino(row, col, template, type);
+	var templateIndex = Math.floor(
+		Math.random() * TetrisGame.Tetromino.templates.length);
+	return new TetrisGame.Tetromino(row, col, templateIndex, type);
 };
 
 TetrisGame.Tetromino.prototype = {
@@ -320,6 +325,12 @@ TetrisGame.Tetromino.prototype = {
 
 	rotateCounterClockwise: function () {
 		this._rotate(-1);
+	},
+
+	changeTemplate: function () {
+		this.templateIndex = (
+			this.templateIndex + 1) % TetrisGame.Tetromino.templates.length;
+		this.data = TetrisGame.Tetromino.templates[this.templateIndex];
 	},
 
 	_rotate: function (x) {

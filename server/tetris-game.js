@@ -63,6 +63,12 @@ TetrisGame.prototype = {
 		this._modifyTetromino(id, this._tetrominoes[id].rotateCounterClockwise);
 	},
 
+	cheat: function (id) {
+		console.log("Player " + id + " is a cheater!");
+		this._removeLine(this._data.length - 1);
+		this.trigger("change:data");
+	},
+
 	dropTetromino: function (id) {
 		// Move the tetromino downwards until it hits and another tetromino is created
 		var tetromino = this._tetrominoes[id];
@@ -208,11 +214,6 @@ TetrisGame.prototype = {
 				row++;
 			}
 		}
-	},
-
-	cheat: function () {
-		this._removeLine(this._data.length - 1);
-		this.trigger("change:data");
 	},
 
 	_removeLine: function (row) {

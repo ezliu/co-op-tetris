@@ -53,6 +53,8 @@ TetrisCanvas.prototype = {
 			color = "rgb(0, 255, 0, 0.5)";
 		} else if (tetrominoType === "chameleon") {
 			color = "rgb(0, 255, 255, 0.5)";
+		} else if (tetrominoType === "shear") {
+			color = "rgb(255, 0, 255, 0.5)";
 		}
 		this.context.fillStyle = color;
 		this.context.fillRect(

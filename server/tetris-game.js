@@ -190,6 +190,23 @@ TetrisGame.prototype = {
 		} else {
 			this.trigger("change:tetromino", id);
 		}
+
+		if (tetromino.type === "shear") {
+			for (var row = 0; row < tetromino.data.length; row++) {
+				for (var col = 0; col < tetromino.data[row].length; col++) {
+					trueRow = row + tetromino.row;
+					trueCol = col + tetromino.col;
+					for (otherId in this._tetrominoes) {
+						if (otherId !== id) {
+							var cut = this._tetrominoes[otherId].cut(trueRow, trueCol);
+							if (cut) {
+								this.trigger("change:tetromino", otherId);
+							}
+						}
+					}
+				}
+			}
+		}
 	},
 
 	_placeTetromino: function (id) {
@@ -296,7 +313,8 @@ function randomSample(items) {
 
 TetrisGame.Tetromino.random = function (row, col) {
 	var typeProbabilities = {
-		"normal": 0.05, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.85};
+		"normal": 0.8, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.05,
+		"shear": 0.05};
 	var type = randomSample(typeProbabilities);
 	var templateIndex = Math.floor(
 		Math.random() * TetrisGame.Tetromino.templates.length);
@@ -326,6 +344,33 @@ TetrisGame.Tetromino.prototype = {
 
 	rotateCounterClockwise: function () {
 		this._rotate(-1);
+	},
+
+	cut: function(trueRow, trueCol) {
+		// Don't cut if there's only one block left.
+		var numBlocks = 0;
+		for (var row = 0; row < this.data.length; row++) {
+			for (var col = 0; col < this.data[row].length; col++) {
+				if (this.data[row][col] !== 0) {
+					numBlocks += 1;
+				}
+			}
+		}
+		if (numBlocks <= 1) {
+			return false;
+		}
+
+		var touched = false;
+		for (var row = 0; row < this.data.length; row++) {
+			for (var col = 0; col < this.data[row].length; col++) {
+				if (row + this.row === trueRow &&
+						col + this.col === trueCol) {
+					touched = touched || (this.data[row][col] === 1);
+					this.data[row][col] = 0;
+				}
+			}
+		}
+		return touched;
 	},
 
 	changeTemplate: function () {

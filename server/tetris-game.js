@@ -278,7 +278,7 @@ function randomSample(items) {
 }
 
 TetrisGame.Tetromino.random = function (row, col) {
-	var typeProbabilities = {"normal": 0.5, "bulldoze": 0.5};
+	var typeProbabilities = {"normal": 0.95, "bulldoze": 0.05};
 	var type = randomSample(typeProbabilities);
 	var template = TetrisGame.Tetromino.templates[
 		Math.floor(Math.random() * TetrisGame.Tetromino.templates.length)

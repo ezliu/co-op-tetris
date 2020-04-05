@@ -72,8 +72,17 @@ TetrisGame.prototype = {
 	},
 
 	toggleTetrominoType: function (id) {
-		this._tetrominoes[id].type = "normal";
-		this.trigger("change:tetromino", id);
+		if (this._tetrominoes[id].type === "bulldoze") {
+			this._tetrominoes[id].type = "normal";
+			this.trigger("change:tetromino", id);
+		} else if (this._tetrominoes[id].type === "float") {
+			this._modifyTetromino(id, this._tetrominoes[id].moveUp);
+			this._tetrominoes[id].jumpsLeft--;
+			if (this._tetrominoes[id].jumpsLeft === 0) {
+				this._tetrominoes[id].type = "normal";
+			}
+			this.trigger("change:tetromino", id);
+		}
 	},
 
 	_getEmptyLine: function (cols) {
@@ -241,6 +250,7 @@ TetrisGame.Tetromino = function Tetromino(row, col, data, type) {
 	this.col = col;
 	this.data = data;
 	this.type = type;
+	this.jumpsLeft = 10;
 }
 
 TetrisGame.Tetromino.templates = [
@@ -279,7 +289,7 @@ function randomSample(items) {
 }
 
 TetrisGame.Tetromino.random = function (row, col) {
-	var typeProbabilities = {"normal": 0.95, "bulldoze": 0.05};
+	var typeProbabilities = {"normal": 0.9, "bulldoze": 0.05, "float": 0.05};
 	var type = randomSample(typeProbabilities);
 	var template = TetrisGame.Tetromino.templates[
 		Math.floor(Math.random() * TetrisGame.Tetromino.templates.length)
@@ -298,6 +308,10 @@ TetrisGame.Tetromino.prototype = {
 
 	moveDown: function () {
 		this.row += 1;
+	},
+
+	moveUp: function () {
+		this.row -= 1;
 	},
 
 	rotateClockwise: function () {

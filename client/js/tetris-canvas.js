@@ -47,8 +47,10 @@ TetrisCanvas.prototype = {
 	
 	_drawCell: function (row, col, tetrominoId, tetrominoType) {
 		var color = this.colors[tetrominoId] || (this.colors[tetrominoId] = this.options.colorGeneratorFunction(tetrominoId));
-		if (tetrominoType !== "normal") {
+		if (tetrominoType === "bulldoze") {
 			color = "rgb(255, 0, 0, 0.5)";
+		} else if (tetrominoType === "float") {
+			color = "rgb(0, 255, 0, 0.5)";
 		}
 		this.context.fillStyle = color;
 		this.context.fillRect(

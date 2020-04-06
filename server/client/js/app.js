@@ -11,8 +11,7 @@
 		.css("width", (height) + "px");
 		
 	var socket = io.connect(),
-		tetrisCanvas = null,
-		tetrisSolver = null;
+		tetrisCanvas = null;
 		
 	socket.on("init", function (data) {
 		tetrisCanvas = new TetrisCanvas($canvas[0], data.tetrisGame, data.id, {
@@ -28,29 +27,17 @@
 		tetrisCanvas.on("all", function (event) {
 			socket.send(event);
 		});
-
-		tetrisSolver = new TetrisSolver(data.tetrisGame, data.id);
-		$("#controls").one("click", function () {
-			tetrisSolver.isActive = true;
-			tetrisSolver.makeBestMove();
-		});
-		tetrisSolver.on("all", function (event) {
-			if (tetrisSolver.isActive) socket.send(event);
-		});
-		tetrisSolver.makeBestMove();
 	});
 	
 	socket.on("change:data", function (tetrisGame) {
 		if (tetrisCanvas === null) return;
 		
-		tetrisCanvas.tetrisGame = tetrisSolver.tetrisGame = tetrisGame;
+		tetrisCanvas.tetrisGame = tetrisGame;
 		window.requestAnimationFrame(tetrisCanvas.draw);
 		
 		$linesCount.html(tetrisGame.linesCount);
 		$level.html(tetrisGame.level);
 		$playersCount.html(tetrisGame.tetrominoesCount);
-
-		tetrisSolver.makeBestMove();
 	});
 	
 	socket.on("change:tetromino", function (data) {

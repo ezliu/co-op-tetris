@@ -47,17 +47,30 @@ TetrisCanvas.prototype = {
 	
 	_drawCell: function (row, col, tetrominoId, tetrominoType) {
 		var color = this.colors[tetrominoId] || (this.colors[tetrominoId] = this.options.colorGeneratorFunction(tetrominoId));
-		if (tetrominoType === "bulldoze") {
-			color = "rgb(255, 0, 0, 0.5)";
-		} else if (tetrominoType === "float") {
-			color = "rgb(0, 255, 0, 0.5)";
-		} else if (tetrominoType === "chameleon") {
-			color = "rgb(0, 255, 255, 0.5)";
-		} else if (tetrominoType === "shear") {
-			color = "rgb(255, 0, 255, 0.5)";
-		}
 		this.context.fillStyle = color;
 		this.context.fillRect(
+			col * this.options.cellSize,
+			row * this.options.cellSize,
+			this.options.cellSize,
+			this.options.cellSize
+		);
+
+		let lineWidth = 10;
+		if (tetrominoType === "bulldoze") {
+			color = "rgb(255, 0, 0)";
+		} else if (tetrominoType === "float") {
+			color = "rgb(0, 255, 0)";
+		} else if (tetrominoType === "chameleon") {
+			color = "rgb(0, 255, 255)";
+		} else if (tetrominoType === "shear") {
+			color = "rgb(255, 0, 255)";
+		} else {
+			color = "rgb(0, 0, 0)";
+			lineWidth = 5;
+		}
+		this.context.strokeStyle = color;
+		this.context.lineWidth = lineWidth;
+		this.context.strokeRect(
 			col * this.options.cellSize,
 			row * this.options.cellSize,
 			this.options.cellSize,

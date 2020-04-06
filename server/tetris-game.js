@@ -95,6 +95,19 @@ TetrisGame.prototype = {
 		}
 	},
 
+	_setShadow: function(id) {
+		let tetromino = _.clone(this._tetrominoes[id]);
+		while (true) {
+			let prevRow = tetromino.row;
+			tetromino.moveDown();
+			if (this._doesTetrominoCollide(tetromino)) {
+				this._tetrominoes[id].setShadow(
+					{"row": prevRow, "col": tetromino.col});
+				break;
+			}
+		}
+	},
+
 	_getEmptyLine: function (cols) {
 		var line = [];
 		for (var col = 0; col < cols; col++) {
@@ -106,15 +119,15 @@ TetrisGame.prototype = {
 	_newTetromino: function (id) {
 		var col = Math.floor(this._data[0].length / 2) - 1;
 		this._tetrominoes[id] = TetrisGame.Tetromino.random(0, col);
+		this._setShadow(id);
 		this.trigger("change:tetromino", id);
 
-		if (this._doesTetrominoCollide(id)) {
+		if (this._doesTetrominoCollide(this._tetrominoes[id])) {
 			this._gameOver();
 		}
 	},
 
-	_doesTetrominoCollide: function (id) {
-		var tetromino = this._tetrominoes[id];
+	_doesTetrominoCollide: function (tetromino) {
 		for (var row = 0; row < tetromino.data.length; row++) {
 			for (var col = 0; col < tetromino.data[row].length; col++) {
 				if (tetromino.data[row][col] && this._isCellOccupied(
@@ -175,7 +188,9 @@ TetrisGame.prototype = {
 		var tetromino = _.clone(this._tetrominoes[id]);
 
 		modificationFunction.call(this._tetrominoes[id]);
-		if (this._doesTetrominoCollide(id)) {
+		this._setShadow(id);
+		if (this._doesTetrominoCollide(this._tetrominoes[id])) {
+			// TODO(evzliu): Refactor this.
 			if (tetromino.type === "bulldoze") {
 				var modifiedTetromino = this._tetrominoes[id];
 				if (this._bulldoze(modifiedTetromino)) {
@@ -274,6 +289,7 @@ TetrisGame.Tetromino = function Tetromino(row, col, templateIndex, type) {
 	this.templateIndex = templateIndex;
 	this.type = type;
 	this.jumpsLeft = 10;
+	this.shadow = undefined;
 }
 
 TetrisGame.Tetromino.templates = [
@@ -344,6 +360,10 @@ TetrisGame.Tetromino.prototype = {
 
 	rotateCounterClockwise: function () {
 		this._rotate(-1);
+	},
+
+	setShadow: function (shadow) {
+		this.shadow = shadow;
 	},
 
 	cut: function(trueRow, trueCol) {

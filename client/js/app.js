@@ -19,7 +19,7 @@
 			moveIntervalMillis: 75,
 			cellSize: Math.floor(height / 20),
 			colorGeneratorFunction: function (id) {
-				return "rgb(" + (id.charCodeAt(0) * 2) + ", " + (id.charCodeAt(1) * 2) + ", " + (id.charCodeAt(2) * 2) + ")";
+				return "rgb(" + (id.charCodeAt(0) * 2) + ", " + (id.charCodeAt(1) * 2) + ", " + (id.charCodeAt(2) * 2);
 			}
 		});
 

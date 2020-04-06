@@ -39,14 +39,22 @@ TetrisCanvas.prototype = {
 		for (var row = 0; row < this.tetrisGame.data.length; row++) {
 			for (var col = 0; col < this.tetrisGame.data[row].length; col++) {
 				if (this.tetrisGame.data[row][col]) {
-					this._drawCell(row, col, this.tetrisGame.data[row][col], "normal");
+					this._drawCell(
+						row, col, this.tetrisGame.data[row][col], "normal", 1.0);
 				}
 			}
 		}
 	},
+
+	_modifyAlpha(color, alpha) {
+		let rgba = "rgba" + color.slice(3, -1) + ", " + alpha + ")";
+		return rgba;
+	},
 	
-	_drawCell: function (row, col, tetrominoId, tetrominoType) {
+	_drawCell: function (row, col, tetrominoId, tetrominoType, alpha) {
 		var color = this.colors[tetrominoId] || (this.colors[tetrominoId] = this.options.colorGeneratorFunction(tetrominoId));
+		color = this._modifyAlpha(color, alpha);
+		console.log(color);
 		this.context.fillStyle = color;
 		this.context.fillRect(
 			col * this.options.cellSize,
@@ -68,6 +76,7 @@ TetrisCanvas.prototype = {
 			color = "rgb(0, 0, 0)";
 			lineWidth = 5;
 		}
+		color = this._modifyAlpha(color, alpha);
 		this.context.strokeStyle = color;
 		this.context.lineWidth = lineWidth;
 		this.context.strokeRect(
@@ -91,7 +100,12 @@ TetrisCanvas.prototype = {
 		for (var row = 0; row < tetromino.data.length; row++) {
 			for (var col = 0; col < tetromino.data[row].length; col++) {
 				if (tetromino.data[row][col]) {
-					this._drawCell(tetromino.row + row, tetromino.col + col, id, tetromino.type);
+					this._drawCell(
+						tetromino.row + row, tetromino.col + col, id,
+						tetromino.type, 1.0);
+					this._drawCell(
+						tetromino.shadow.row + row, tetromino.shadow.col + col, id,
+						tetromino.type, 0.1);
 				}
 			}
 		}

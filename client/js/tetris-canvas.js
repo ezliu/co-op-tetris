@@ -54,7 +54,6 @@ TetrisCanvas.prototype = {
 	_drawCell: function (row, col, tetrominoId, tetrominoType, alpha) {
 		var color = this.colors[tetrominoId] || (this.colors[tetrominoId] = this.options.colorGeneratorFunction(tetrominoId));
 		color = this._modifyAlpha(color, alpha);
-		console.log(color);
 		this.context.fillStyle = color;
 		this.context.fillRect(
 			col * this.options.cellSize,

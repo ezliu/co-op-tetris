@@ -10,7 +10,7 @@
 		.attr("height", height)
 		.css("width", (height) + "px");
 		
-	var socket = io.connect("http://192.168.86.107:1111"),
+	var socket = io.connect(),
 		tetrisCanvas = null,
 		tetrisSolver = null;
 		

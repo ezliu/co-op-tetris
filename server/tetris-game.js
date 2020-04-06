@@ -235,6 +235,11 @@ TetrisGame.prototype = {
 		}
 		this._removeCompleteLines();
 		this._newTetromino(id);
+
+		// Recompute all the shadows based on new floor.
+		for (id in this._tetrominoes) {
+			this._setShadow(id);
+		}
 		this.trigger("change:data");
 	},
 

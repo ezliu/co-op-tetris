@@ -1,8 +1,12 @@
+const express = require("express");
+let app = express();
 var TetrisGame = require("./tetris-game"),
-	app = require("http").createServer(),
-	io = require("socket.io")(app);
+	http = require("http").createServer(app),
+	io = require("socket.io")(http);
 
-app.listen(1111);
+http.listen(1111);
+
+app.use(express.static("client"));
 
 var tetrisGame = null;
 

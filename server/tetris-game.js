@@ -313,8 +313,8 @@ function randomSample(items) {
 
 TetrisGame.Tetromino.random = function (row, col) {
 	var typeProbabilities = {
-		"normal": 0.6, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.05,
-		"shear": 0.25};
+		"normal": 0.85, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.05,
+		"shear": 0};
 	var type = randomSample(typeProbabilities);
 	var templateIndex = Math.floor(
 		Math.random() * TetrisGame.Tetromino.templates.length);

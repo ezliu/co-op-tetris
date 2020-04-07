@@ -280,6 +280,14 @@ TetrisGame.prototype = {
 
 	_moveTetrominoesDown: function () {
 		for (var id in this._tetrominoes) {
+      if (this._tetrominoes[id].type === "autochameleon" &&
+          Math.random() < 0.05) {
+        let tetromino = _.clone(this._tetrominoes[id]);
+        this._tetrominoes[id].changeTemplate();
+        if (this._doesTetrominoCollide(this._tetrominoes[id])) {
+          _.extend(this._tetrominoes[id], tetromino);
+        }
+      }
 			this.moveTetrominoDown(id);
 		}
 	}
@@ -334,8 +342,8 @@ function randomSample(items) {
 
 TetrisGame.Tetromino.random = function (row, col) {
 	var typeProbabilities = {
-		"normal": 0.85, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.05,
-		"shear": 0};
+		"normal": 0.75, "bulldoze": 0.05, "float": 0.05, "chameleon": 0.05,
+		"autochameleon": 0.1, "shear": 0};
 	var type = randomSample(typeProbabilities);
 	var templateIndex = Math.floor(
 		Math.random() * TetrisGame.Tetromino.templates.length);

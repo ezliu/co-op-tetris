@@ -69,6 +69,8 @@ TetrisCanvas.prototype = {
 			color = "rgb(0, 255, 0)";
 		} else if (tetrominoType === "chameleon") {
 			color = "rgb(0, 255, 255)";
+		} else if (tetrominoType === "autochameleon") {
+			color = "rgb(255, 255, 0)";
 		} else if (tetrominoType === "shear") {
 			color = "rgb(255, 0, 255)";
 		} else {

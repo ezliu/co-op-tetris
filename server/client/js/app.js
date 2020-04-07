@@ -1,8 +1,11 @@
+let highScore = 0;
+
 (function ($) {
 	var $canvas = $("#tetris-canvas"),
 		height = $canvas.height(),
 		$linesCount = $("#lines-count"),
 		$level = $("#level"),
+		$highScore= $("#highScore"),
 		$playersCount = $("#players-count");
 		
 	$canvas
@@ -36,6 +39,7 @@
 		window.requestAnimationFrame(tetrisCanvas.draw);
 		
 		$linesCount.html(tetrisGame.linesCount);
+		$highScore.html(tetrisGame.highScore);
 		$level.html(tetrisGame.level);
 		$playersCount.html(tetrisGame.tetrominoesCount);
 	});

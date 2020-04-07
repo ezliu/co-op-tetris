@@ -9,6 +9,7 @@ http.listen(1111);
 app.use(express.static("client"));
 
 var tetrisGame = null;
+let highScore = 0;
 
 function newGame() {
 	console.log("New Game");
@@ -19,7 +20,10 @@ function newGame() {
 	});
 	
 	tetrisGame.on("change:data", function () {
-		io.sockets.json.emit("change:data", tetrisGame.toJSON());
+		let json = tetrisGame.toJSON();
+		highScore = Math.max(highScore, json.linesCount);
+		json.highScore = highScore;
+		io.sockets.json.emit("change:data", json);
 	});
 	
 	tetrisGame.on("change:tetromino", function (id) {
@@ -38,7 +42,9 @@ io.sockets.on("connection", function (socket) {
 	console.log("Player connected: " + socket.id);
 
 	tetrisGame.addTetromino(socket.id);
-	socket.emit("init", {id: socket.id, tetrisGame: tetrisGame.toJSON()});
+	let json = tetrisGame.toJSON();
+	json.highScore = highScore;
+	socket.emit("init", {id: socket.id, tetrisGame: json});
 	
 	var local = tetrisGame;
 	socket.on("message", function (message) {

@@ -90,7 +90,7 @@ TetrisGame.prototype = {
 			}
 			this.trigger("change:tetromino", id);
 		} else if (this._tetrominoes[id].type === "chameleon") {
-			this._tetrominoes[id].changeTemplate();
+			this._changeTemplate(id);
 			this.trigger("change:tetromino", id);
 		}
 	},
@@ -278,16 +278,21 @@ TetrisGame.prototype = {
 		this._setFallInterval(this._fallIntervalMillis * this.options.levelFallIntervalMultiplier);
 	},
 
+	_changeTemplate: function(id) {
+		// Change template if possible
+		let tetromino = _.clone(this._tetrominoes[id]);
+		this._tetrominoes[id].changeTemplate();
+		if (this._doesTetrominoCollide(this._tetrominoes[id])) {
+			_.extend(this._tetrominoes[id], tetromino);
+		}
+	},
+
 	_moveTetrominoesDown: function () {
 		for (var id in this._tetrominoes) {
-      if (this._tetrominoes[id].type === "autochameleon" &&
-          Math.random() < 0.05) {
-        let tetromino = _.clone(this._tetrominoes[id]);
-        this._tetrominoes[id].changeTemplate();
-        if (this._doesTetrominoCollide(this._tetrominoes[id])) {
-          _.extend(this._tetrominoes[id], tetromino);
-        }
-      }
+			if (this._tetrominoes[id].type === "autochameleon" &&
+					Math.random() < 0.05) {
+				this._changeTemplate(id);
+			}
 			this.moveTetrominoDown(id);
 		}
 	}

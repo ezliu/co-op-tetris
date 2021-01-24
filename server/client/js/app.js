@@ -21,8 +21,14 @@ let highScore = 0;
       moveIntervalMillis: 75,
       cellSize: Math.floor(height / 20),
       colorGeneratorFunction: function (id) {
-        return "rgb(" + (id.charCodeAt(0) * 2) + ", " + (id.charCodeAt(1) * 2) + ", " + (id.charCodeAt(2) * 2);
-      }
+        const prettyColors = ["rgb(0, 153, 153)", 
+			      "rbg(102, 0, 255)", 
+        		      "rbg(255, 102, 102)", 
+        		      "rgb(153, 0, 51)",  
+			      "rgb(204, 153, 255)",
+			      "rgb(0, 255, 0)"]
+        return prettyColors[id.charCodeAt(0) % prettyColors.length];     
+	}
     });
 
     window.onkeydown = tetrisCanvas.handleKeyDown;

@@ -18,3 +18,10 @@ TODO:
 1. Only broadcast one event when a tetromino is dropped
 1. Game over animation
 1. Chat room
+
+# Playing in network
+Getting private IP address
+- Use ifconfig (need to allow incoming connections)
+
+./ngrok port
+

@@ -22,6 +22,6 @@ TODO:
 # Playing in network
 Getting private IP address
 - Use ifconfig (need to allow incoming connections)
-- Use port 1001
+- Use port 1111
 
-./ngrok port
+./ngrok http 1111
